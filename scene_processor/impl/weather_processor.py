@@ -1,5 +1,5 @@
 # encoding=utf-8
-from scene_processor.SceneProcessor import SceneProcessor
+from scene_processor.scene_processor import SceneProcessor
 from utils.date_utils import get_current_and_future_dates
 from utils.file_utils import load_file_to_obj
 from utils.helpers import get_raw_slot, update_slot, format_title_value_for_logging, is_slot_fully_filled, send_message, extract_json_from_string
@@ -12,7 +12,7 @@ class WeatherSceneProcessor(SceneProcessor):
         self.slot = get_raw_slot(parameters)
         self.scene_prompts = load_file_to_obj('scene_config/scene_prompts.json')
 
-    def process(self, user_input):
+    def process(self, user_input, context):
         # 处理用户输入，更新槽位，检查完整性，以及与用户交互
         # 先检查本次用户输入是否有信息补充，保存补充后的结果   编写程序进行字符串value值diff对比，判断是否有更新
         current_date, future_date = get_current_and_future_dates(days=7)

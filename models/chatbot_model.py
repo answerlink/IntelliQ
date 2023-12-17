@@ -1,7 +1,7 @@
 # encoding=utf-8
 import logging
 
-from scene_processor.impl.WeatherSceneProcessor import WeatherSceneProcessor
+from scene_processor.impl.weather_processor import WeatherSceneProcessor
 from utils.helpers import send_message
 
 
@@ -80,6 +80,6 @@ class ChatbotModel:
                 if not self.processors.get(self.current_purpose):
                     self.processors[self.current_purpose] = WeatherSceneProcessor(parameters)
             # 调用抽象类process方法
-            return self.processors[self.current_purpose].process(user_input)
+            return self.processors[self.current_purpose].process(user_input, None)
         return '未命中场景'
 
