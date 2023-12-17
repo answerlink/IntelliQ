@@ -7,7 +7,22 @@ import config
 from functools import lru_cache
 
 
-def load_scenario_templates(file_path):
+def filename_to_classname(filename):
+    """
+    Convert a snake_case filename to a CamelCase class name.
+
+    Args:
+    filename (str): The filename in snake_case, without the .py extension.
+
+    Returns:
+    str: The converted CamelCase class name.
+    """
+    parts = filename.split('_')
+    class_name = ''.join(part.capitalize() for part in parts)
+    return class_name
+
+
+def load_scene_templates(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return json.load(file)
 

@@ -6,7 +6,7 @@ from utils.helpers import get_raw_slot, update_slot, format_title_value_for_logg
 import json
 
 
-class WeatherSceneProcessor(SceneProcessor):
+class WeatherProcessor(SceneProcessor):
     def __init__(self, parameters):
         self.slot_template = get_raw_slot(parameters)
         self.slot = get_raw_slot(parameters)

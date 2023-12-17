@@ -1,5 +1,6 @@
 {
   "weather_query": {
+    "processor": "weather_processor",
     "name": "问天气",
     "description": "天气信息查询服务",
     "parameters": [
@@ -18,6 +19,7 @@
     ]
   },
   "hotel_booking": {
+    "processor": "hotel_processor",
     "name": "订酒店",
     "description": "订酒店的服务",
     "parameters": [

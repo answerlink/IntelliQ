@@ -1,15 +1,29 @@
 # encoding=utf-8
+import importlib
 import logging
 
-from scene_processor.impl.weather_processor import WeatherSceneProcessor
-from utils.helpers import send_message
+from utils.helpers import send_message, filename_to_classname
 
 
 class ChatbotModel:
-    def __init__(self, scenario_templates):
-        self.scene_templates: str = scenario_templates
+    def __init__(self, scene_templates: dict):
+        self.scene_templates: dict = scene_templates
         self.current_purpose: str = ''
         self.processors = {}
+
+    @staticmethod
+    def load_scene_processor(self, scene_config):
+        try:
+            processor_name = scene_config["processor"]
+            scene_parameters = scene_config["parameters"]
+            module = importlib.import_module(f"scene_processor.impl.{processor_name}")
+            class_name = filename_to_classname(processor_name)
+            print('module', module)
+            print('class_name', class_name)
+            class_ = getattr(module, class_name)
+            return class_(scene_parameters)
+        except (ImportError, AttributeError, KeyError):
+            raise ImportError(f"未找到场景处理器 scene_config: {scene_config}")
 
     def is_related_to_last_intent(self, user_input):
         """
@@ -49,6 +63,18 @@ class ChatbotModel:
             # 用户输入的选项无效的情况，可以进行相应的处理
             print("无效的选项，请重新选择")
 
+    def get_processor_for_scene(self, scene_name):
+        if scene_name in self.processors:
+            return self.processors[scene_name]
+
+        scene_config = self.scene_templates.get(scene_name)
+        if not scene_config:
+            raise ValueError(f"未找到名为{scene_name}的场景配置")
+
+        processor_class = self.load_scene_processor(self, scene_config)
+        self.processors[scene_name] = processor_class
+        return self.processors[scene_name]
+
     def process_multi_question(self, user_input):
         """
         处理多轮问答
@@ -69,17 +95,10 @@ class ChatbotModel:
             scene_info = self.scene_templates[self.current_purpose]
             parameters = scene_info.get("parameters", [])
 
-            # 在这里可以根据 parameters 调用不同场景的处理逻辑
-            if self.current_purpose == 'weather_query':
-                if not self.processors.get(self.current_purpose):
-                    self.processors[self.current_purpose] = WeatherSceneProcessor(parameters)
-            elif self.current_purpose == 'fund_query':
-                if not self.processors.get(self.current_purpose):
-                    self.processors[self.current_purpose] = WeatherSceneProcessor(parameters)
-            elif self.current_purpose == 'hotel_booking':
-                if not self.processors.get(self.current_purpose):
-                    self.processors[self.current_purpose] = WeatherSceneProcessor(parameters)
+            self.get_processor_for_scene(self.current_purpose)
             # 调用抽象类process方法
             return self.processors[self.current_purpose].process(user_input, None)
         return '未命中场景'
+
+
 
