@@ -1,0 +1,66 @@
+{
+  "weather_query": {
+    "name": "问天气",
+    "description": "天气信息查询服务",
+    "parameters": [
+      {
+        "title": "时间",
+        "desc": "口语表述：昨天、今天、明天；具体日期：10号、1月1号、2月3日；日期范围：未来一周、最近十四天",
+        "transform": "时间统一转换格式，如果是时间点：yyyy-MM-dd；如果是日期范围：yyyy-MM-dd yyyy-MM-dd",
+        "required": true
+      },
+      {
+        "title": "地点",
+        "desc": "口语表述：建邺区、南京、河北省、江苏南通、上海虹桥、北京朝阳区",
+        "transform": "地点统一转换格式为市区（如果有区）或市，如南京市建邺区、南京市；如果只能提取到省份但提取不到市区，如山东省，不要更新value值",
+        "required": true
+      }
+    ]
+  },
+  "hotel_booking": {
+    "name": "订酒店",
+    "description": "订酒店的服务",
+    "parameters": [
+      {
+        "title": "入住地点",
+        "desc": "酒店的具体位置，可以是城市、地区等",
+        "transform": "地点统一转换格式为市区（如果有区）或市",
+        "required": true
+      },
+      {
+        "title": "入住开始日期",
+        "desc": "入住酒店的开始日期",
+        "transform": "日期格式：yyyy-MM-dd",
+        "required": true
+      },
+      {
+        "title": "入住结束日期",
+        "desc": "入住酒店的结束日期",
+        "transform": "日期格式：yyyy-MM-dd",
+        "required": true
+      },
+      {
+        "title": "酒店档次",
+        "desc": "酒店的档次，如豪华、经济等",
+        "transform": "不需要转换",
+        "required": true
+      }
+    ]
+  },
+  "fund_consultation": {
+    "name": "公积金咨询",
+    "description": "公积金咨询",
+    "parameters": [
+      {
+        "title": "事件",
+        "desc": "买房、租房、退休",
+        "required": true
+      },
+      {
+        "title": "购买房屋类型",
+        "desc": "买房事件时需要 经济适用房、新房、二手房",
+        "required": false
+      }
+    ]
+  }
+}

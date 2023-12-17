@@ -18,6 +18,11 @@ IntelliQ 是一个开源项目，旨在提供一个基于大型语言模型（LL
 git clone [项目仓库URL]
 cd [项目名称]
 [其他安装步骤]
+
+# 安装步骤
+cd toyourpath/IntelliQ
+pip install -r requirements.txt 
+python app.py
 ```
 
 ## 快速开始
