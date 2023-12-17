@@ -15,27 +15,19 @@ IntelliQ 是一个开源项目，旨在提供一个基于大型语言模型（LL
 
 确保您已安装[列出任何先决条件]。然后执行以下步骤：
 ```
-git clone [项目仓库URL]
-cd [项目名称]
-[其他安装步骤]
-
 # 安装步骤
-cd toyourpath/IntelliQ
-pip install -r requirements.txt 
+git clone https://github.com/answerlink/IntelliQ.git
+cd IntelliQ
+pip install -r requirements.txt
+
+# 启动
 python app.py
 ```
-
-## 快速开始
-
-为了快速开始，请参考以下代码示例：
-
-python
-
-[代码示例]
 
 ## 文档
 
 查阅详细的API文档和使用说明，请访问 [文档链接]。
+
 ## 贡献
 
 非常欢迎和鼓励社区贡献。如果您想贡献代码，请遵循以下步骤：
@@ -50,9 +42,9 @@ python
 
 ## 许可证
 
-本项目根据 [Apache License, Version 2.0] 许可证授权。详情请参阅 LICENSE 文件。
+本项目根据 [Apache License, Version 2.0] 许可证授权。详情请参阅 [LICENSE](https://github.com/answerlink/IntelliQ/blob/main/LICENSE) 文件。
 
-# 版本更新
+## 版本更新
 
 v1.0 2023-12-17 首次可用更新；框架完成
 
