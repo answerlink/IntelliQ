@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能问答对话框</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #chat-container { width: 50%; margin: auto; border: 1px solid #ccc; padding: 10px; }
+        #chat-output { height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
+        #chat-input { width: calc(100% - 22px); padding: 10px; }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-output"></div>
+        <input type="text" id="chat-input" placeholder="输入问题..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()">发送</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            var input = document.getElementById('chat-input');
+            var message = input.value;
+            input.value = '';
+
+            // 显示用户输入的问题
+            var chatOutput = document.getElementById('chat-output');
+            chatOutput.innerHTML += '<div>你: ' + message + '</div>';
+
+            // 发送请求到 Flask API
+            fetch('http://127.0.0.1:5000/multi_question', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 显示返回的答案
+                chatOutput.innerHTML += '<div>回答: ' + data.answer + '</div>';
+                chatOutput.scrollTop = chatOutput.scrollHeight; // 滚动到底部
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>

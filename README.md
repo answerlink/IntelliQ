@@ -42,7 +42,7 @@ python app.py
 
 ## 许可证
 
-本项目根据 [Apache License, Version 2.0] 许可证授权。详情请参阅 [LICENSE](https://github.com/answerlink/IntelliQ/blob/main/LICENSE) 文件。
+本项目根据 **Apache License, Version 2.0** 许可证授权。详情请参阅 [LICENSE](https://github.com/answerlink/IntelliQ/blob/main/LICENSE) 文件。
 
 ## 版本更新
 

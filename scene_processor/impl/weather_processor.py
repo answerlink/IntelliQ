@@ -1,4 +1,6 @@
 # encoding=utf-8
+import logging
+
 from scene_processor.scene_processor import SceneProcessor
 from utils.date_utils import get_current_and_future_dates
 from utils.file_utils import load_file_to_obj
@@ -21,10 +23,10 @@ class WeatherProcessor(SceneProcessor):
                                               json.dumps(self.slot_template, ensure_ascii=False), user_input),
             user_input)
         current_values = extract_json_from_string(new_info_json_raw)
-        print('current_values', current_values)
-        print('slot update before', self.slot)
+        logging.debug('current_values: %s', current_values)
+        logging.debug('slot update before: %s', self.slot)
         update_slot(current_values, self.slot)
-        print('slot update after', self.slot)
+        logging.debug('slot update after: %s', self.slot)
         # 判断参数是否已经全部补全
         if is_slot_fully_filled(self.slot):
             return self.respond_with_complete_data()

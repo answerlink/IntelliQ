@@ -6,7 +6,7 @@ from utils.helpers import get_raw_slot, update_slot, format_title_value_for_logg
 import json
 
 
-class WeatherSceneProcessor(SceneProcessor):
+class HotelProcessor(SceneProcessor):
     def __init__(self, parameters):
         self.slot_template = get_raw_slot(parameters)
         self.slot = get_raw_slot(parameters)
@@ -14,4 +14,5 @@ class WeatherSceneProcessor(SceneProcessor):
 
     def process(self, user_input, context):
         # 处理用户输入，更新槽位，检查完整性，以及与用户交互
-        pass
+        print('HotelProcessor.process...')
+        return '酒店预订成功'
