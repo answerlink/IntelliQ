@@ -3,7 +3,7 @@
 ## 介绍
 IntelliQ 是一个开源项目，旨在提供一个基于大型语言模型（LLM）的多轮问答系统。该系统结合了先进的意图识别和词槽填充（Slot Filling）技术，致力于提升对话系统的理解深度和响应精确度。本项目为开发者社区提供了一个灵活、高效的解决方案，用于构建和优化各类对话型应用。
 
-<img src="https://github.com/gallonyin/worktool/blob/master/images/demo.gif"  height="388" width="690">
+<img src="https://github.com/answerlink/IntelliQ/blob/main/images/demo.gif"  height="388" width="690">
 
 ## 特性
 1. 多轮对话管理：能够处理复杂的对话场景，支持连续多轮交互。
