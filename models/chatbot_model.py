@@ -2,7 +2,9 @@
 import importlib
 import logging
 
-from utils.helpers import send_message, filename_to_classname
+from scene_processor.impl.common_processor import CommonProcessor
+from utils.data_format_utils import extract_continuous_digits, extract_float
+from utils.helpers import send_message
 
 
 class ChatbotModel:
@@ -14,14 +16,7 @@ class ChatbotModel:
     @staticmethod
     def load_scene_processor(self, scene_config):
         try:
-            processor_name = scene_config["processor"]
-            scene_parameters = scene_config["parameters"]
-            module = importlib.import_module(f"scene_processor.impl.{processor_name}")
-            class_name = filename_to_classname(processor_name)
-            print('module', module)
-            print('class_name', class_name)
-            class_ = getattr(module, class_name)
-            return class_(scene_parameters)
+            return CommonProcessor(scene_config)
         except (ImportError, AttributeError, KeyError):
             raise ImportError(f"未找到场景处理器 scene_config: {scene_config}")
 
@@ -31,9 +26,9 @@ class ChatbotModel:
         """
         if not self.current_purpose:
             return False
-        prompt = f"判断当前用户输入内容与当前对话场景的关联性:\n\n当前对话场景: {self.scene_templates[self.current_purpose]['description']}\n当前用户输入: {user_input}\n\n这两次输入是否关联（仅回答是或否）？"
+        prompt = f"判断当前用户输入内容与当前对话场景的关联性:\n\n当前对话场景: {self.scene_templates[self.current_purpose]['description']}\n当前用户输入: {user_input}\n\n这两次输入是否关联（仅用小数回答关联度，得分范围0.0至1.0）"
         result = send_message(prompt, None)
-        return result == '是'
+        return extract_float(result) > 0.5
 
     def recognize_intent(self, user_input):
         # 根据场景模板生成选项
@@ -52,9 +47,12 @@ class ChatbotModel:
 
         print('purpose_options', purpose_options)
         print('user_choice', user_choice)
+
+        user_choices = extract_continuous_digits(user_choice)
+
         # 根据用户选择获取对应场景
-        if user_choice != '0':
-            self.current_purpose = purpose_options[user_choice]
+        if user_choices and user_choices[0] != '0':
+            self.current_purpose = purpose_options[user_choices[0]]
 
         if self.current_purpose:
             print(f"用户选择了场景：{self.scene_templates[self.current_purpose]['name']}")

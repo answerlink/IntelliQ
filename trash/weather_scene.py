@@ -1,7 +1,7 @@
 # encoding=utf-8
 from datetime import datetime, timedelta
 import json
-from utils.helpers import send_message, extract_json_from_string, update_slot, is_slot_fully_filled, format_title_value_for_logging, get_raw_slot
+from utils.helpers import send_message, extract_json_from_string, update_slot, is_slot_fully_filled, format_name_value_for_logging, get_raw_slot
 
 prompt_weather_info_update = """JSON每个元素代表一个参数信息，我先给你提供一些基本介绍：
 '''

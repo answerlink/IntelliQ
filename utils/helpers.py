@@ -82,8 +82,27 @@ def get_raw_slot(parameters):
     # 创建新的JSON对象
     output_data = []
     for item in parameters:
-        new_item = {"title": item["title"], "value": ""}
+        new_item = {"name": item["name"], "desc": item["desc"], "type": item["type"], "value": ""}
         output_data.append(new_item)
+    return output_data
+
+
+def get_slot_update_json(slot):
+    # 创建新的JSON对象
+    output_data = []
+    for item in slot:
+        new_item = {"name": item["name"], "desc": item["desc"], "value": item["value"]}
+        output_data.append(new_item)
+    return output_data
+
+
+def get_slot_query_user_json(slot):
+    # 创建新的JSON对象
+    output_data = []
+    for item in slot:
+        if not item["value"]:
+            new_item = {"name": item["name"], "desc": item["desc"], "value":  item["value"]}
+            output_data.append(new_item)
     return output_data
 
 
@@ -92,23 +111,24 @@ def update_slot(json_data, dict_target):
     更新槽位slot参数
     """
     # 遍历JSON数据中的每个元素
-    index = 0
     for item in json_data:
         # 检查value字段是否为空字符串
         if item['value'] != '':
-            dict_target[index]['value'] = item.get('value')
-        index += 1
+            for target in dict_target:
+                if target['name'] == item['name']:
+                    target['value'] = item.get('value')
+                    break
 
 
-def format_title_value_for_logging(json_data):
+def format_name_value_for_logging(json_data):
     """
     抽取参数名称和value值
     """
     log_strings = []
     for item in json_data:
-        title = item.get('title', 'Unknown Title')  # 获取title，如果不存在则使用'Unknown Title'
+        name = item.get('name', 'Unknown name')  # 获取name，如果不存在则使用'Unknown name'
         value = item.get('value', 'N/A')  # 获取value，如果不存在则使用'N/A'
-        log_string = f"Title: {title}, Value: {value}"
+        log_string = f"name: {name}, Value: {value}"
         log_strings.append(log_string)
     return '\n'.join(log_strings)
 

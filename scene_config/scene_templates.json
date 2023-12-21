@@ -5,15 +5,15 @@
     "description": "天气信息查询服务",
     "parameters": [
       {
-        "title": "时间",
-        "desc": "口语表述：昨天、今天、明天；具体日期：10号、1月1号、2月3日；日期范围：未来一周、最近十四天",
-        "transform": "时间统一转换格式，如果是时间点：yyyy-MM-dd；如果是日期范围：yyyy-MM-dd yyyy-MM-dd",
+        "name": "date",
+        "desc": "查天气的具体日期。时间格式：yyyy-MM-dd",
+        "type": "string",
         "required": true
       },
       {
-        "title": "地点",
-        "desc": "口语表述：建邺区、南京、河北省、江苏南通、上海虹桥、北京朝阳区",
-        "transform": "地点统一转换格式为市区（如果有区）或市，如南京市建邺区、南京市；如果只能提取到省份但提取不到市区，如山东省，不要更新value值",
+        "name": "location",
+        "desc": "查天气的具体城市和地点",
+        "type": "string",
         "required": true
       }
     ]
@@ -24,27 +24,27 @@
     "description": "订酒店的服务",
     "parameters": [
       {
-        "title": "入住地点",
+        "name": "入住地点",
         "desc": "酒店的具体位置，可以是城市、地区等",
-        "transform": "地点统一转换格式为市区（如果有区）或市",
+        "type": "string",
         "required": true
       },
       {
-        "title": "入住开始日期",
-        "desc": "入住酒店的开始日期",
-        "transform": "日期格式：yyyy-MM-dd",
+        "name": "入住开始日期",
+        "desc": "入住酒店的开始日期，日期格式：yyyy-MM-dd",
+        "type": "string",
         "required": true
       },
       {
-        "title": "入住结束日期",
-        "desc": "入住酒店的结束日期",
-        "transform": "日期格式：yyyy-MM-dd",
+        "name": "入住结束日期",
+        "desc": "入住酒店的结束日期，日期格式：yyyy-MM-dd",
+        "type": "string",
         "required": true
       },
       {
-        "title": "酒店档次",
+        "name": "酒店档次",
         "desc": "酒店的档次，如豪华、经济等",
-        "transform": "不需要转换",
+        "type": "string",
         "required": true
       }
     ]
@@ -54,13 +54,15 @@
     "description": "公积金咨询",
     "parameters": [
       {
-        "title": "事件",
+        "name": "事件",
         "desc": "买房、租房、退休",
+        "type": "string",
         "required": true
       },
       {
-        "title": "购买房屋类型",
+        "name": "购买房屋类型",
         "desc": "买房事件时需要 经济适用房、新房、二手房",
+        "type": "string",
         "required": false
       }
     ]

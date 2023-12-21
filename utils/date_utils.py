@@ -2,6 +2,11 @@
 from datetime import datetime, timedelta
 
 
+def get_current_date():
+    current_date = datetime.now()
+    return current_date.strftime("%Y-%m-%d")
+
+
 def get_current_and_future_dates(days=7):
     """
     计算当前日期和未来指定天数后的日期。
