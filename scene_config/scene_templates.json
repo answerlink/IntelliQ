@@ -1,6 +1,5 @@
 {
   "weather_query": {
-    "processor": "weather_processor",
     "name": "问天气",
     "description": "天气信息查询服务",
     "parameters": [
@@ -12,14 +11,13 @@
       },
       {
         "name": "location",
-        "desc": "查天气的具体城市和地点",
+        "desc": "查天气的城市或地点",
         "type": "string",
         "required": true
       }
     ]
   },
   "hotel_booking": {
-    "processor": "hotel_processor",
     "name": "订酒店",
     "description": "订酒店的服务",
     "parameters": [
@@ -63,7 +61,7 @@
         "name": "购买房屋类型",
         "desc": "买房事件时需要 经济适用房、新房、二手房",
         "type": "string",
-        "required": false
+        "required": true
       }
     ]
   }

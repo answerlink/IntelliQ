@@ -38,7 +38,7 @@ class CommonProcessor(SceneProcessor):
         logging.debug(f'%s ------ 参数已完整，详细参数如下', self.scene_name)
         logging.debug(format_name_value_for_logging(self.slot))
         logging.debug(f'正在请求%sAPI，请稍后……', self.scene_name)
-        return format_name_value_for_logging(self.slot) + '\n正在请求API，请稍后……'
+        return format_name_value_for_logging(self.slot) + '\n正在请求{}API，请稍后……'.format(self.scene_name)
 
     def ask_user_for_missing_data(self, user_input):
         message = get_slot_query_user_message(self.scene_name, self.slot, user_input)

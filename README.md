@@ -1,7 +1,7 @@
 
 # IntelliQ
 ## 介绍
-IntelliQ 是一个开源项目，旨在提供一个基于大型语言模型（LLM）的多轮问答系统。该系统结合了先进的意图识别和词槽填充（Slot Filling）技术，致力于提升对话系统的理解深度和响应精确度。通过综合应用自然语言处理（NLP）和机器学习技术，本项目为开发者社区提供了一个灵活、高效的解决方案，用于构建和优化各类对话型应用。
+IntelliQ 是一个开源项目，旨在提供一个基于大型语言模型（LLM）的多轮问答系统。该系统结合了先进的意图识别和词槽填充（Slot Filling）技术，致力于提升对话系统的理解深度和响应精确度。本项目为开发者社区提供了一个灵活、高效的解决方案，用于构建和优化各类对话型应用。
 
 ## 特性
 1. 多轮对话管理：能够处理复杂的对话场景，支持连续多轮交互。
@@ -13,7 +13,7 @@ IntelliQ 是一个开源项目，旨在提供一个基于大型语言模型（LL
 
 ## 安装和使用
 
-确保您已安装[列出任何先决条件]。然后执行以下步骤：
+确保您已安装 git、python3。然后执行以下步骤：
 ```
 # 安装步骤
 git clone https://github.com/answerlink/IntelliQ.git
@@ -22,6 +22,8 @@ pip install -r requirements.txt
 
 # 启动
 python app.py
+
+# 可视化调试可以浏览器打开 demo/user_input.html
 ```
 
 ## 文档
@@ -38,13 +40,15 @@ python app.py
     推送到分支 (git push origin feature/AmazingFeature)
     开启Pull Request
 
-查看 CONTRIBUTING.md 了解更多信息。
+查看 [CONTRIBUTING.md](https://github.com/answerlink/IntelliQ/blob/main/CONTRIBUTING.md)  了解更多信息。
 
 ## 许可证
 
 本项目根据 **Apache License, Version 2.0** 许可证授权。详情请参阅 [LICENSE](https://github.com/answerlink/IntelliQ/blob/main/LICENSE) 文件。
 
 ## 版本更新
+
+v1.1 2023-12-21 改造通用场景处理器；完成高度抽象封装；提示词调优
 
 v1.0 2023-12-17 首次可用更新；框架完成
 
