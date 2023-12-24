@@ -5,6 +5,8 @@ IntelliQ 是一个开源项目，旨在提供一个基于大型语言模型（LL
 
 <img src="https://github.com/answerlink/IntelliQ/blob/main/images/demo.gif"  height="388" width="690">
 
+<img src="https://github.com/answerlink/IntelliQ/blob/main/images/slot_multi-turn-flow.png"  height="388" width="690">
+
 ## 特性
 1. 多轮对话管理：能够处理复杂的对话场景，支持连续多轮交互。
 2. 意图识别：准确判定用户输入的意图，支持自定义意图扩展。
