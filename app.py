@@ -2,7 +2,7 @@
 from models.chatbot_model import ChatbotModel
 from utils.app_init import before_init
 from utils.helpers import load_all_scene_configs
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -21,6 +21,11 @@ def api_multi_question():
 
     response = chatbot_model.process_multi_question(question)
     return jsonify({"answer": response})
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return send_file('./demo/user_input.html')
 
 
 if __name__ == '__main__':
