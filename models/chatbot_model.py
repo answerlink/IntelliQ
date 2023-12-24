@@ -1,7 +1,7 @@
 # encoding=utf-8
-import importlib
 import logging
 
+from config import RELATED_INTENT_THRESHOLD
 from scene_processor.impl.common_processor import CommonProcessor
 from utils.data_format_utils import extract_continuous_digits, extract_float
 from utils.helpers import send_message
@@ -28,7 +28,7 @@ class ChatbotModel:
             return False
         prompt = f"判断当前用户输入内容与当前对话场景的关联性:\n\n当前对话场景: {self.scene_templates[self.current_purpose]['description']}\n当前用户输入: {user_input}\n\n这两次输入是否关联（仅用小数回答关联度，得分范围0.0至1.0）"
         result = send_message(prompt, None)
-        return extract_float(result) > 0.5
+        return extract_float(result) > RELATED_INTENT_THRESHOLD
 
     def recognize_intent(self, user_input):
         # 根据场景模板生成选项
@@ -45,8 +45,8 @@ class ChatbotModel:
         # 发送选项给用户
         user_choice = send_message(f"有下面多种场景，需要你根据用户输入进行判断，只答选项\n{options_prompt}\n用户输入：{user_input}\n请回复序号：", user_input)
 
-        print('purpose_options', purpose_options)
-        print('user_choice', user_choice)
+        logging.debug(f'purpose_options: %s', purpose_options)
+        logging.debug(f'user_choice: %s', user_choice)
 
         user_choices = extract_continuous_digits(user_choice)
 
@@ -90,9 +90,6 @@ class ChatbotModel:
 
         if self.current_purpose in self.scene_templates:
             # 根据场景模板调用相应场景的处理逻辑
-            scene_info = self.scene_templates[self.current_purpose]
-            parameters = scene_info.get("parameters", [])
-
             self.get_processor_for_scene(self.current_purpose)
             # 调用抽象类process方法
             return self.processors[self.current_purpose].process(user_input, None)

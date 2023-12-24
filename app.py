@@ -1,18 +1,15 @@
 # encoding=utf-8
 from models.chatbot_model import ChatbotModel
 from utils.app_init import before_init
-from utils.helpers import load_scene_templates
+from utils.helpers import load_all_scene_configs
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-# 加载场景模板
-scene_templates = load_scene_templates('scene_config/scene_templates.json')
-
 # 实例化ChatbotModel
-chatbot_model = ChatbotModel(scene_templates)
+chatbot_model = ChatbotModel(load_all_scene_configs())
 
 
 @app.route('/multi_question', methods=['POST'])

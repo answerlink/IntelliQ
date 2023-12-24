@@ -1,4 +1,5 @@
 # encoding=utf-8
+import glob
 import json
 import re
 import requests
@@ -25,6 +26,23 @@ def filename_to_classname(filename):
 def load_scene_templates(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return json.load(file)
+
+
+def load_all_scene_configs():
+    # 用于存储所有场景配置的字典
+    all_scene_configs = {}
+
+    # 搜索目录下的所有json文件
+    for file_path in glob.glob("scene_config/*.json"):
+        current_config = load_scene_templates(file_path)
+
+        for key, value in current_config.items():
+            # todo 可以有加载优先级
+            # 只有当键不存在时，才添加到all_scene_configs中
+            if key not in all_scene_configs:
+                all_scene_configs[key] = value
+
+    return all_scene_configs
 
 
 @lru_cache(maxsize=100)
