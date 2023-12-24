@@ -1,17 +1,15 @@
 # encoding=utf-8
-import json
-import re
 import requests
 import config
 
-def send_local_Qwen_message(message, user_input):
+
+def send_local_qwen_message(message, user_input):
     """
     请求Qwen函数
     """
     print('--------------------------------------------------------------------')
     if config.DEBUG:
         print('prompt输入:', message)
-        print('用户输入:', user_input)
     elif user_input:
         print('用户输入:', user_input)
     print('----------------------------------')
@@ -20,14 +18,13 @@ def send_local_Qwen_message(message, user_input):
         "Content-Type": "application/json",
     }
     data = {
-        "prompt": "system： '{message}', 用户内容： '{user_input}'".format(message=message, user_input=user_input),
+        "prompt": message,
         "history": [
             [
                 "You are a helpful assistant.", ""
             ]
-        ]      
+        ]
     }
-
 
     try:
         response = requests.post(config.Qwen_URL, headers=headers, json=data, verify=False)
@@ -42,7 +39,6 @@ def send_local_Qwen_message(message, user_input):
     except requests.RequestException as e:
         print(f"Request error: {e}")
         return None
-
 
 
 def send_chatgpt_message(message, user_input):

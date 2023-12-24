@@ -5,11 +5,11 @@ import requests
 import config
 
 from functools import lru_cache
-from utils.send_llm import send_local_Qwen_message
+from utils.send_llm import send_local_qwen_message
 from utils.send_llm import send_chatgpt_message
 
 send_llm_req = {
-    "Qwen": send_local_Qwen_message,
+    "Qwen": send_local_qwen_message,
     "chatGPT": send_chatgpt_message
 }
 
