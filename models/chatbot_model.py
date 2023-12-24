@@ -79,7 +79,6 @@ class ChatbotModel:
         :param user_input:
         :return:
         """
-
         # 检查当前输入是否与上一次的意图场景相关
         if self.is_related_to_last_intent(user_input):
             pass
