@@ -32,7 +32,7 @@ API_KEY: 修改为ChatGPT的ApiKey
 # 启动
 python app.py
 
-# 可视化调试可以浏览器打开 demo/user_input.html
+# 可视化调试可以浏览器打开 demo/user_input.html 或 127.0.0.1:5000
 ```
 
 ## 文档
