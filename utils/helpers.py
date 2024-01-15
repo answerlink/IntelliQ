@@ -8,10 +8,12 @@ import config
 from functools import lru_cache
 from utils.send_llm import send_local_qwen_message
 from utils.send_llm import send_chatgpt_message
+from utils.send_llm import send_tongyiqwen_message
 
 send_llm_req = {
     "Qwen": send_local_qwen_message,
-    "chatGPT": send_chatgpt_message
+    "chatGPT": send_chatgpt_message,
+    "tongyiQwen":send_tongyiqwen_message
 }
 
 def filename_to_classname(filename):
