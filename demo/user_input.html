@@ -5,17 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能问答对话框</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        #chat-container { width: 50%; margin: auto; border: 1px solid #ccc; padding: 10px; }
-        #chat-output { height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
-        #chat-input { width: calc(100% - 22px); padding: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #chat-container {
+            width: 50%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background: #fff;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        #fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        #fullscreen-btn:hover {
+            background-color: #0056b3;
+        }
+        #chat-output {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #e9e9e9;
+        }
+        #input-container {
+            display: flex;
+            margin-top: 10px;
+        }
+        #chat-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            margin: 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .fullscreen {
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
+            max-height: 100vh;
+            border-radius: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .fullscreen #chat-output {
+            height: calc(100% - 60px);
+        }
     </style>
 </head>
 <body>
     <div id="chat-container">
+        <button id="fullscreen-btn">全屏</button>
         <div id="chat-output"></div>
-        <input type="text" id="chat-input" placeholder="输入问题..." onkeypress="handleKeyPress(event)">
-        <button onclick="sendMessage()">发送</button>
+        <div id="input-container">
+            <input type="text" id="chat-input" placeholder="输入问题..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">发送</button>
+        </div>
     </div>
 
     <script>
@@ -50,6 +129,19 @@
                 sendMessage();
             }
         }
+
+        var fullScreenBtn = document.getElementById('fullscreen-btn');
+        var chatContainer = document.getElementById('chat-container');
+
+        fullScreenBtn.addEventListener('click', function() {
+            if (chatContainer.classList.contains('fullscreen')) {
+                chatContainer.classList.remove('fullscreen');
+                fullScreenBtn.textContent = '全屏';
+            } else {
+                chatContainer.classList.add('fullscreen');
+                fullScreenBtn.textContent = '还原';
+            }
+        });
     </script>
 </body>
 </html>

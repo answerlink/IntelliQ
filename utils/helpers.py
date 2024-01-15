@@ -39,7 +39,7 @@ def load_all_scene_configs():
     all_scene_configs = {}
 
     # 搜索目录下的所有json文件
-    for file_path in glob.glob("scene_config/*.json"):
+    for file_path in glob.glob("scene_config/**/*.json", recursive=True):
         current_config = load_scene_templates(file_path)
 
         for key, value in current_config.items():
