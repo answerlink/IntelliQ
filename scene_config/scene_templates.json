@@ -7,7 +7,8 @@
         "name": "date",
         "desc": "查天气的具体日期。时间格式：yyyy-MM-dd",
         "type": "string",
-        "required": true
+        "required": true,
+        "example": "JSON：[{'name': 'date', 'desc': '查天气的具体日期。时间格式：yyyy-MM-dd', 'value': ''}}]\n输入：我想要23年5月1日的天气\n输出：[{'name': 'date', 'desc': '查天气的具体日期。时间格式：yyyy-MM-dd', 'value': '2023-05-01'}]"
       },
       {
         "name": "location",

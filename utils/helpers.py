@@ -82,6 +82,17 @@ def get_raw_slot(parameters):
     return output_data
 
 
+def get_dynamic_example(parameters):
+    # 创建新的JSON对象
+    output_data = []
+    for item in parameters:
+        if("example" in item.keys()):
+            output_data.append(item['example'])
+        else:
+            output_data.append('{"name":"xx","value":"xx"}')
+    return output_data
+
+
 def get_slot_update_json(slot):
     # 创建新的JSON对象
     output_data = []
