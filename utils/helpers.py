@@ -82,6 +82,14 @@ def get_raw_slot(parameters):
     return output_data
 
 
+def get_dynamic_example(scene_config):
+    # 创建新的JSON对象
+    if 'example' in scene_config:
+        return scene_config['example']
+    else:
+        return '答：{"name":"xx","value":"xx"}'
+
+
 def get_slot_update_json(slot):
     # 创建新的JSON对象
     output_data = []
