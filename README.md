@@ -51,9 +51,14 @@ python app.py
 
 查看 [CONTRIBUTING.md](https://github.com/answerlink/IntelliQ/blob/main/CONTRIBUTING.md)  了解更多信息。
 
-## 许可证
+### All Thanks To Our Contributors:
+<a href="https://github.com/answerlink/IntelliQ/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=answerlink/IntelliQ" />
+</a>
 
-本项目根据 **Apache License, Version 2.0** 许可证授权。详情请参阅 [LICENSE](https://github.com/answerlink/IntelliQ/blob/main/LICENSE) 文件。
+## License
+
+**Apache License, Version 2.0**
 
 ## 版本更新
 
