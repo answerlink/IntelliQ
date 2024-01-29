@@ -2,7 +2,7 @@
   "weather_query": {
     "name": "问天气",
     "description": "天气信息查询服务",
-    "example": "JSON：[{'name': 'date', 'desc': '查天气的具体日期。时间格式：yyyy-MM-dd', 'value': ''}]\n输入：我想要23年5月1日的天气\n答：[{'name': 'date', 'value': '2023-05-01'}]",
+    "example": "JSON：[{'name': 'date', 'desc': '查天气的具体日期。时间格式：yyyy-MM-dd', 'value': ''}]\n输入：我想要23年5月1日的天气\n答：{'name': 'date', 'value': '2023-05-01'}",
     "parameters": [
       {
         "name": "date",

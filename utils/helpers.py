@@ -152,6 +152,10 @@ def extract_json_from_string(input_string):
                 json_obj = json.loads(match)
                 valid_jsons.append(json_obj)
             except json.JSONDecodeError:
+                try:
+                    valid_jsons.append(fix_json(match))
+                except json.JSONDecodeError:
+                    continue  # 如果不是有效的JSON，跳过该匹配项
                 continue  # 如果不是有效的JSON，跳过该匹配项
 
         return valid_jsons
@@ -159,4 +163,14 @@ def extract_json_from_string(input_string):
         print(f"Error occurred: {e}")
         return []
 
+
+def fix_json(bad_json):
+    # 首先，用双引号替换掉所有的单引号
+    fixed_json = bad_json.replace("'", '"')
+    try:
+        # 然后尝试解析
+        return json.loads(fixed_json)
+    except json.JSONDecodeError:
+        # 如果解析失败，打印错误信息，但不会崩溃
+        print("给定的字符串不是有效的 JSON 格式。")
 
