@@ -22,7 +22,7 @@ IntelliQ 是一个开源项目，旨在提供一个基于大型语言模型（LL
 # 安装步骤
 git clone https://github.com/answerlink/IntelliQ.git
 cd IntelliQ
-pip install -r requirements.txt
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # 修改配置
 配置项在 config/__init__.py

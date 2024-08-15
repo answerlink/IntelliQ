@@ -5,16 +5,6 @@ import re
 import requests
 import config
 
-from functools import lru_cache
-from utils.send_llm import send_local_qwen_message
-from utils.send_llm import send_chatgpt_message
-from utils.send_llm import send_tongyiqwen_message
-
-send_llm_req = {
-    "Qwen": send_local_qwen_message,
-    "chatGPT": send_chatgpt_message,
-    "tongyiQwen":send_tongyiqwen_message
-}
 
 def filename_to_classname(filename):
     """
@@ -53,12 +43,42 @@ def load_all_scene_configs():
     return all_scene_configs
 
 
-@lru_cache(maxsize=100)
 def send_message(message, user_input):
     """
-    请求LLM函数
+    请求chatGPT函数
     """
-    return send_llm_req.get(config.USE_MODEL, send_chatgpt_message)(message, user_input)
+    print('--------------------------------------------------------------------')
+    if config.DEBUG:
+        print('prompt输入:', message)
+    elif user_input:
+        print('用户输入:', user_input)
+    print('----------------------------------')
+    headers = {
+        "Authorization": f"Bearer {config.API_KEY}",
+        "Content-Type": "application/json",
+    }
+
+    data = {
+        "model": config.MODEL,
+        "messages": [
+            {"role": "system", "content": config.SYSTEM_PROMPT},
+            {"role": "user", "content": f"{message}"}
+        ]
+    }
+
+    try:
+        response = requests.post(config.GPT_URL, headers=headers, json=data, verify=False)
+        if response.status_code == 200:
+            answer = response.json()["choices"][0]["message"]['content']
+            print('LLM输出:', answer)
+            print('--------------------------------------------------------------------')
+            return answer
+        else:
+            print(f"Error: {response.status_code}")
+            return None
+    except requests.RequestException as e:
+        print(f"Request error: {e}")
+        return None
 
 
 def is_slot_fully_filled(json_data):

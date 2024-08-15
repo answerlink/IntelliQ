@@ -56,7 +56,7 @@
             flex-grow: 1;
             padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 4px 4px 4px 4px;
             margin: 0 7px 0 0;
         }
         button {
@@ -64,7 +64,7 @@
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 4px 4px 4px 4px;
             cursor: pointer;
         }
         button:hover {
@@ -85,13 +85,6 @@
         .fullscreen #chat-output {
             height: calc(100% - 60px);
         }
-        #mic-btn {
-            background-color: #28a745;
-            margin-left: 10px;
-        }
-        #mic-btn:hover {
-            background-color: #218838;
-        }
     </style>
 </head>
 <body>
@@ -101,81 +94,10 @@
         <div id="input-container">
             <input type="text" id="chat-input" placeholder="输入问题..." onkeypress="handleKeyPress(event)">
             <button onclick="sendMessage()">发送</button>
-            <button id="mic-btn" onclick="toggleMic()">🎤</button>
         </div>
     </div>
 
     <script>
-        var socket;
-        var mediaRecorder;
-        var recognizing = false;
-
-        function setupWebSocket() {
-            socket = new WebSocket('ws://10.21.8.6:43007');
-
-            socket.onopen = function(event) {
-                console.log('WebSocket connection established');
-            };
-
-            socket.onmessage = function(event) {
-                var chatOutput = document.getElementById('chat-output');
-                chatOutput.innerHTML += '<div>回答: ' + event.data + '</div>';
-                chatOutput.scrollTop = chatOutput.scrollHeight; // 滚动到底部
-            };
-
-            socket.onclose = function(event) {
-                console.log('WebSocket connection closed');
-            };
-
-            socket.onerror = function(error) {
-                console.error('WebSocket error:', error);
-            };
-        }
-
-        function toggleMic() {
-            if (recognizing) {
-                stopRecording();
-            } else {
-                startRecording();
-            }
-        }
-
-        function startRecording() {
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then(function(stream) {
-                    setupWebSocket();
-
-                    mediaRecorder = new MediaRecorder(stream, {
-                        mimeType: 'audio/webm'
-                    });
-
-                    mediaRecorder.ondataavailable = function(event) {
-                        if (event.data.size > 0 && socket.readyState === WebSocket.OPEN) {
-                            socket.send(event.data);
-                        }
-                    };
-
-                    mediaRecorder.start(100); // Send audio data in chunks of 100ms
-
-                    recognizing = true;
-                    document.getElementById('mic-btn').style.backgroundColor = '#dc3545';
-                })
-                .catch(function(err) {
-                    console.error('Error accessing microphone:', err);
-                });
-        }
-
-        function stopRecording() {
-            if (mediaRecorder) {
-                mediaRecorder.stop();
-            }
-            if (socket) {
-                socket.close();
-            }
-            recognizing = false;
-            document.getElementById('mic-btn').style.backgroundColor = '#28a745';
-        }
-
         function sendMessage() {
             var input = document.getElementById('chat-input');
             var message = input.value;
