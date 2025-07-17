@@ -1,0 +1,31 @@
+{
+  "name": "crm-assistant",
+  "version": "1.0.0",
+  "description": "CRM助手 - 基于LLM的多轮问答系统",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "./start_dev.sh",
+    "backend": "./start_backend.sh",
+    "frontend": "./start_frontend.sh",
+    "test": "python test_connection.py",
+    "install-all": "pip install -r requirements.txt && cd frontend && npm install"
+  },
+  "keywords": [
+    "crm",
+    "ai",
+    "chatbot",
+    "llm",
+    "react",
+    "flask"
+  ],
+  "author": "CRM Team",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=16.0.0",
+    "python": ">=3.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/answerlink/IntelliQ.git"
+  }
+} 

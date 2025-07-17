@@ -1,0 +1,24 @@
+body {
+  background: #f5f6fa;
+  font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+.ant-tabs-card .ant-tabs-content {
+  background: none;
+}
+
+@media (max-width: 600px) {
+  .ant-layout-content {
+    padding: 8px !important;
+  }
+  .ant-layout-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    height: auto !important;
+    padding: 8px 12px !important;
+  }
+} 
