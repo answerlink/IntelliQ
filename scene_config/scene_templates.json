@@ -1,69 +1,257 @@
 {
-  "weather_query": {
-    "name": "问天气",
-    "description": "天气信息查询服务",
-    "example": "JSON：[{'name': 'date', 'desc': '查天气的具体日期。时间格式：yyyy-MM-dd', 'value': ''}]\n输入：我想要23年5月1日的天气\n答：{'name': 'date', 'value': '2023-05-01'}",
+  "common_fields": [
+    {"name": "phone", "desc": "手机号，必须是11位数字", "type": "string", "required": true}
+  ],
+  "scene_list": [{
+    "scene_name": "traffic_query",
+    "name": "流量查询",
+    "description": "手机流量使用情况查询服务，可查询指定手机号某月的流量使用情况。",
+    "example": "JSON：[{'name': 'phone', 'desc': '需要查询的手机号', 'value': ''}, {'name': 'month', 'desc': '查询的月份，格式为yyyy-MM', 'value': ''} ]\n输入：帮我查一下18724011022在2024年7月的流量\n答：{ 'phone': '18724011022', 'month': '2024-07' }",
     "parameters": [
       {
-        "name": "date",
-        "desc": "查天气的具体日期。时间格式：yyyy-MM-dd",
-        "type": "string",
-        "required": true
-      },
-      {
-        "name": "location",
-        "desc": "查天气的城市或地点",
+        "name": "month",
+        "desc": "查询的月份，格式为yyyy-MM",
         "type": "string",
         "required": true
       }
-    ]
+    ],
+    "enabled": true
+  },{
+    "scene_name": "broadband_repair",
+    "name": "宽带报修",
+    "description": "宽带故障报修服务，提交手机号、宽带账号、地址和故障类型。",
+    "parameters": [
+      {"name": "broadband_account", "desc": "宽带账号", "type": "string", "required": true},
+      {"name": "address", "desc": "报修地址", "type": "string", "required": true},
+      {"name": "fault_type", "desc": "故障类型", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },{
+    "scene_name": "package_change",
+    "name": "5G套餐变更",
+    "description": "办理5G套餐变更，提交手机号、套餐类型和生效时间。",
+    "parameters": [
+      {"name": "package_type", "desc": "套餐类型", "type": "string", "required": true},
+      {"name": "effective_time", "desc": "生效时间，格式yyyy-MM-dd", "type": "string", "required": true}
+    ],
+    "enabled": true
   },
-  "hotel_booking": {
-    "name": "订酒店",
-    "description": "订酒店的服务",
+  {
+    "scene_name": "sub_card_apply",
+    "name": "副卡办理",
+    "description": "副卡办理服务，提交主卡手机号、副卡数量和套餐类型。",
     "parameters": [
-      {
-        "name": "入住地点",
-        "desc": "酒店的具体位置，可以是城市、地区等",
-        "type": "string",
-        "required": true
-      },
-      {
-        "name": "入住开始日期",
-        "desc": "入住酒店的开始日期，日期格式：yyyy-MM-dd",
-        "type": "string",
-        "required": true
-      },
-      {
-        "name": "入住结束日期",
-        "desc": "入住酒店的结束日期，日期格式：yyyy-MM-dd",
-        "type": "string",
-        "required": true
-      },
-      {
-        "name": "酒店档次",
-        "desc": "酒店的档次，如豪华、经济等",
-        "type": "string",
-        "required": true
-      }
-    ]
+      {"name": "sub_card_count", "desc": "副卡数量", "type": "string", "required": true},
+      {"name": "sub_package_type", "desc": "副卡套餐类型", "type": "string", "required": true}
+    ],
+    "enabled": true
   },
-  "fund_consultation": {
-    "name": "公积金咨询",
-    "description": "公积金咨询",
+  {
+    "scene_name": "account_bill",
+    "name": "话费账单",
+    "description": "查询话费账单，提交手机号和账单周期。",
     "parameters": [
-      {
-        "name": "事件",
-        "desc": "买房、租房、退休",
-        "type": "string",
-        "required": true
-      },
-      {
-        "name": "购买房屋类型",
-        "desc": "买房事件时需要 经济适用房、新房、二手房",
-        "type": "string",
-        "required": true
-      }
-    ]
-  }
+      {"name": "bill_period", "desc": "账单周期，格式yyyy-MM", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "realname_query",
+    "name": "实名认证",
+    "description": "实名认证查询，提交手机号和身份证号。",
+    "parameters": [
+      {"name": "id_number", "desc": "身份证号", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "points_query",
+    "name": "积分查询",
+    "description": "查询积分信息，提交手机号。",
+    "parameters": [
+      {}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "suspend_apply",
+    "name": "停机保号办理",
+    "description": "办理停机保号，提交手机号和停机时长。",
+    "parameters": [
+      {"name": "suspend_duration", "desc": "停机时长（天）", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+  "scene_name":   "invoice_apply",
+    "name": "发票申请",
+    "description": "发票申请，提交手机号、发票类型和邮寄地址。",
+    "parameters": [
+      {"name": "invoice_type", "desc": "发票类型", "type": "string", "required": true},
+      {"name": "mailing_address", "desc": "邮寄地址", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "address_modify",
+    "name": "修改通信地址",
+    "description": "修改通信地址，提交手机号和新地址。",
+    "parameters": [
+      {"name": "new_address", "desc": "新地址", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "recharge",
+    "name": "充值缴费",
+    "description": "充值缴费，提交手机号、金额和支付方式。",
+    "parameters": [
+      {"name": "amount", "desc": "充值金额", "type": "string", "required": true},
+      {"name": "payment_method", "desc": "支付方式", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "number_transfer",
+    "name": "号码过户",
+    "description": "号码过户，提交原手机号和新用户身份证号。",
+    "parameters": [
+      {"name": "new_owner_id", "desc": "新用户身份证号", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "roaming_enable",
+    "name": "国际漫游开通",
+    "description": "国际漫游开通，提交手机号、漫游国家、起止日期。",
+    "parameters": [
+      {"name": "roaming_country", "desc": "漫游国家", "type": "string", "required": true},
+      {"name": "start_date", "desc": "开始日期", "type": "string", "required": true},
+      {"name": "end_date", "desc": "结束日期", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "package_unsubscribe",
+    "name": "套餐退订",
+    "description": "套餐退订，提交手机号和套餐类型。",
+    "parameters": [
+      {"name": "package_type", "desc": "套餐类型", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "points_exchange",
+    "name": "积分兑换",
+    "description": "积分兑换，提交手机号、兑换类型和数量。",
+    "parameters": [
+      {"name": "exchange_type", "desc": "兑换类型", "type": "string", "required": true},
+      {"name": "exchange_quantity", "desc": "兑换数量", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "realname_status",
+    "name": "查询实名状态",
+    "description": "查询实名状态，提交手机号。",
+    "parameters": [
+      {}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "notification_subscribe",
+    "name": "通知订阅",
+    "description": "通知订阅，提交手机号和通知类型。",
+    "parameters": [
+      {"name": "notification_type", "desc": "通知类型", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "complaint",
+    "name": "投诉工单",
+    "description": "投诉工单，提交手机号、投诉类型和内容。",
+    "parameters": [
+      {"name": "complaint_type", "desc": "投诉类型", "type": "string", "required": true},
+      {"name": "complaint_content", "desc": "投诉内容", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "transfer_agent",
+    "name": "转人工客服",
+    "description": "转人工客服，提交手机号。",
+    "parameters": [
+      {}
+    ],
+    "enabled": true
+  },
+  {
+      "scene_name": "faq",
+    "name": "FAQ查询",
+    "description": "FAQ查询，提交问题内容。",
+    "parameters": [
+      {"name": "question", "desc": "问题内容", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "broadband_upgrade",
+    "name": "宽带升级",
+    "description": "宽带升级，提交手机号、宽带账号和升级类型。",
+    "parameters": [
+      {"name": "broadband_account", "desc": "宽带账号", "type": "string", "required": true},
+      {"name": "upgrade_type", "desc": "升级类型", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "feedback",
+    "name": "服务评价提交",
+    "description": "服务评价提交，提交手机号、评分和评价内容。",
+    "parameters": [
+      {"name": "score", "desc": "评分", "type": "string", "required": true},
+      {"name": "comment", "desc": "评价内容", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "password_reset",
+    "name": "密码重置",
+    "description": "密码重置，提交手机号和身份证号。",
+    "parameters": [
+      {"name": "id_number", "desc": "身份证号", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "stop_resume",
+    "name": "停/复机业务办理",
+    "description": "停/复机业务办理，提交手机号和操作类型。",
+    "parameters": [
+      {"name": "action", "desc": "操作类型（停机/复机）", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name": "value_added",
+    "name": "增值业务办理/退订",
+    "description": "增值业务办理/退订，提交手机号、业务名称和操作类型。",
+    "parameters": [
+      {"name": "service_name", "desc": "业务名称", "type": "string", "required": true},
+      {"name": "action", "desc": "操作类型（办理/退订）", "type": "string", "required": true}
+    ],
+    "enabled": true
+  },
+  {
+    "scene_name":   "chat_log",
+    "name": "对话日志记录",
+    "description": "对话日志记录，提交手机号、操作和日志内容。",
+    "parameters": [
+      {"name": "action", "desc": "操作", "type": "string", "required": true},
+      {"name": "log_content", "desc": "日志内容", "type": "string", "required": true}
+    ],
+    "enabled": true
+  }]
 }

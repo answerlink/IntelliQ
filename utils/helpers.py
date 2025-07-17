@@ -3,7 +3,11 @@ import glob
 import json
 import re
 import requests
+import urllib3
 import config
+
+# 禁用SSL证书验证警告
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def filename_to_classname(filename):
@@ -27,25 +31,123 @@ def load_scene_templates(file_path):
 
 
 def load_all_scene_configs():
-    # 用于存储所有场景配置的字典
+    """
+    从本地scene_templates.json文件加载场景配置
+    特殊处理common_fields通用字段，将其合并到每个场景的parameters中
+    """
+    print("从本地scene_templates.json加载场景配置")
     all_scene_configs = {}
 
     # 搜索目录下的所有json文件
     for file_path in glob.glob("scene_config/**/*.json", recursive=True):
         current_config = load_scene_templates(file_path)
-
+        
+        # 提取通用字段
+        common_fields = current_config.get('common_fields', [])
+        
+        # 处理场景列表
+        scene_list = current_config.get('scene_list', [])
+        
+        for scene in scene_list:
+            scene_name = scene.get('scene_name')
+            if scene_name and scene_name not in all_scene_configs:
+                # 复制场景的parameters
+                scene_parameters = scene.get('parameters', []).copy()
+                
+                # 将common_fields合并到parameters前面
+                merged_parameters = common_fields.copy() + scene_parameters
+                
+                # 构建场景配置，添加scene_name字段
+                all_scene_configs[scene_name] = {
+                    "scene_name": scene_name,  # 添加英文场景名称
+                    "name": scene.get('name', ''),
+                    "description": scene.get('description', ''),
+                    "parameters": merged_parameters,
+                    "enabled": scene.get('enabled', False),
+                    "example": scene.get('example', '')
+                }
+        
+        # 处理其他非scene_list和common_fields的配置项
         for key, value in current_config.items():
-            # todo 可以有加载优先级
-            # 只有当键不存在时，才添加到all_scene_configs中
-            if key not in all_scene_configs:
+            if key not in ['common_fields', 'scene_list'] and key not in all_scene_configs:
+                # 为其他配置项也添加scene_name字段
+                if isinstance(value, dict):
+                    value['scene_name'] = key
                 all_scene_configs[key] = value
 
     return all_scene_configs
 
 
-def send_message(message, user_input):
+def call_scene_api(scene_name, slots_data):
     """
-    请求chatGPT函数
+    调用场景API
+    :param scene_name: 场景名称（如broadband_repair）
+    :param slots_data: 槽位数据
+    :return: API响应结果
+    """
+    try:
+        # 构建API URL
+        api_url = config.SCENE_API_URL_TEMPLATE.format(scene_name=scene_name)
+        
+        # 准备请求头
+        headers = {
+            "Content-Type": "application/json"
+        }
+        
+        # 发送POST请求，直接发送扁平化的slots_data
+        print(f"调用场景API: {api_url}")
+        print(f"请求体: {json.dumps(slots_data, ensure_ascii=False)}")
+        response = requests.post(
+            api_url, 
+            headers=headers, 
+            json=slots_data, 
+            timeout=config.API_TIMEOUT
+        )
+        
+        if response.status_code == 200:
+            result = response.json()
+            print(f"API调用成功: {json.dumps(result, ensure_ascii=False)}")
+            return result
+        else:
+            print(f"API调用失败，状态码: {response.status_code}")
+            return {"error": f"API调用失败，状态码: {response.status_code}"}
+            
+    except requests.RequestException as e:
+        print(f"API请求异常: {e}")
+        return {"error": f"API请求异常: {e}"}
+    except Exception as e:
+        print(f"处理API响应时出错: {e}")
+        return {"error": f"处理API响应时出错: {e}"}
+
+
+def process_api_result(api_result, chat_history=None):
+    """
+    处理API结果，通过AI生成用户友好的回复
+    :param api_result: API返回的结果
+    :param chat_history: 聊天记录
+    :return: 处理后的用户友好回复
+    """
+    try:
+        # 只取data部分发给AI
+        data_part = api_result.get("data", api_result)
+        prompt = config.API_RESULT_PROMPT.format(api_result=json.dumps(data_part, ensure_ascii=False))
+        
+        # 调用AI处理结果
+        result = send_message(prompt, None, chat_history)
+        
+        if result:
+            return result
+        else:
+            return "抱歉，处理结果时出现错误，请稍后重试。"
+            
+    except Exception as e:
+        print(f"处理API结果时出错: {e}")
+        return "抱歉，处理结果时出现错误，请稍后重试。"
+
+
+def send_message(message, user_input, chat_history=None):
+    """
+    请求chatGPT函数，支持聊天记录
     """
     print('--------------------------------------------------------------------')
     if config.DEBUG:
@@ -53,17 +155,29 @@ def send_message(message, user_input):
     elif user_input:
         print('用户输入:', user_input)
     print('----------------------------------')
+    
     headers = {
         "Authorization": f"Bearer {config.API_KEY}",
         "Content-Type": "application/json",
     }
 
+    # 构建消息列表
+    messages = [{"role": "system", "content": config.SYSTEM_PROMPT}]
+    
+    # 添加聊天记录（如果提供）
+    if chat_history:
+        # 限制聊天记录数量
+        limited_history = chat_history[-config.CHAT_HISTORY_COUNT:]
+        for msg in limited_history:
+            messages.append(msg)
+    
+    # 添加当前消息
+    messages.append({"role": "user", "content": f"{message}"})
+
     data = {
         "model": config.MODEL,
-        "messages": [
-            {"role": "system", "content": config.SYSTEM_PROMPT},
-            {"role": "user", "content": f"{message}"}
-        ]
+        "messages": messages,
+        "enable_thinking": False
     }
 
     try:
@@ -104,10 +218,10 @@ def get_raw_slot(parameters):
 
 def get_dynamic_example(scene_config):
     # 创建新的JSON对象
-    if 'example' in scene_config:
+    if 'example' in scene_config and scene_config['example'] != '':
         return scene_config['example']
     else:
-        return '答：{"name":"xx","value":"xx"}'
+        return "JSON：[{'name': 'phone', 'desc': '需要查询的手机号', 'value': ''}, {'name': 'month', 'desc': '查询的月份，格式为yyyy-MM', 'value': ''} ]\n输入：帮我查一下18724011022在2024年7月的流量\n答：{ 'phone': '18724011022', 'month': '2024-07' }"
 
 
 def get_slot_update_json(slot):
@@ -135,6 +249,9 @@ def update_slot(json_data, dict_target):
     """
     # 遍历JSON数据中的每个元素
     for item in json_data:
+        # 检查item是否包含必要的字段
+        if not isinstance(item, dict) or 'name' not in item or 'value' not in item:
+            continue
         # 检查value字段是否为空字符串
         if item['value'] != '':
             for target in dict_target:
