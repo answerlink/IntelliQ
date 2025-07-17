@@ -5,7 +5,8 @@ IntelliQ 是一个开源项目，旨在提供一个基于大型语言模型（LL
 
 <img src="https://github.com/answerlink/IntelliQ/blob/main/images/demo.gif"  height="388" width="690">
 
-<img src="https://github.com/answerlink/IntelliQ/blob/main/images/slot_multi-turn-flow.png"  height="388" width="690">
+## 工作流程
+<img src="https://github.com/answerlink/IntelliQ/blob/main/images/workflow.png"  height="388" width="690">
 
 ## 特性
 1. **多轮对话管理**：能够处理复杂的对话场景，支持连续多轮交互。
@@ -21,26 +22,20 @@ IntelliQ 是一个开源项目，旨在提供一个基于大型语言模型（LL
 
 ## 安装和使用
 
-### 环境要求
+### 🌏环境要求
 - Python 3.8+
-- Node.js 16+
-- npm 7+
+- Node.js 16+ (包含npm包管理器)
+- npm 7+ (随Node.js自动安装)
 
-### 🚀 快速启动（推荐）
+> **注意**: npm是Node.js的包管理器，安装Node.js时会自动包含npm。如果您还没有安装Node.js，请访问 [Node.js官网](https://nodejs.org/) 下载安装。
 
-**一键启动前后端服务：**
+### 🔧修改配置
+配置项在 config/__init__.py
+* GPT_URL: AI平台的URL
+* API_KEY: 修改为自己的API密钥
+* API_BASE_URL: 修改为查询/办理的接口
 
-macOS/Linux:
-```bash
-./start_dev.sh
-```
-
-Windows:
-```cmd
-start_dev.cmd
-```
-
-### 📋 手动安装步骤
+### 📋 安装步骤
 
 确保您已安装 git、python3、node.js。然后执行以下步骤：
 
@@ -73,45 +68,21 @@ cd ..
 - 复制 `frontend/.env.example` 为 `frontend/.env` 并根据需要修改配置
 
 **5. 启动服务**
-```bash
-# 方式1：分别启动
-./start_backend.sh    # 启动后端 (端口5050)
-./start_frontend.sh   # 启动前端 (端口3000)
 
-# 方式2：手动启动
-python app.py         # 后端
-cd frontend && npm start  # 前端
+启动后端服务：
+```bash
+python app.py
+```
+
+启动前端服务（新开一个终端窗口）：
+```bash
+cd frontend && npm start
 ```
 
 **访问地址：**
 - 前端界面：http://localhost:3000
 - 后端API：http://localhost:5050
 - API健康检查：http://localhost:5050/api/health
-
-### 🧪 测试联调
-
-启动后端服务后，运行测试脚本验证联调状态：
-
-```bash
-# 激活虚拟环境
-source venv/bin/activate  # Linux/macOS
-# venv\Scripts\activate   # Windows
-
-# 运行测试
-python test_connection.py
-```
-
-该脚本会测试：
-- 后端健康检查
-- LLM聊天接口
-- 模拟槽位接口
-- CORS跨域配置
-
-## 📚 文档
-
-- **[前后端联调说明](./前后端联调说明.md)** - 详细的前后端联调指南
-- **[配置说明](./config.py)** - 环境变量和配置文件说明
-- **[API接口文档](#api接口)** - RESTful API接口说明
 
 ### 🔗 API接口
 
@@ -170,6 +141,7 @@ POST /api/reset_session
 **Apache License, Version 2.0**
 
 ## 版本更新
+v2.0 2025-7-17 实现真实的API的对接；优化流程；升级前端
 
 v1.3 2024-1-15 集成通义千问线上模型
 
